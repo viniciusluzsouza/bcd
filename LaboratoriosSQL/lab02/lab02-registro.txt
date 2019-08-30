@@ -1,0 +1,576 @@
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> show tables;
++-------------------------+
+| Tables_in_lab02vinicius |
++-------------------------+
+| Departamento            |
+| Funcionario             |
++-------------------------+
+2 rows in set (0.01 sec)
+
+MySQL [lab02vinicius]> DESC Funcionario
+    -> ;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| idFuncionario  | int(11)     | NO   | PRI | NULL    |       |
+| Nome           | varchar(45) | NO   |     | NULL    |       |
+| Sobrenome      | varchar(45) | NO   |     | NULL    |       |
+| idDepartamento | int(11)     | NO   | MUL | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+12 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select Sobrenome from Funcionario;
++-------------+
+| Sobrenome   |
++-------------+
+| Silva       |
+| Coelho      |
+| Ferreira    |
+| Silveira    |
+| de la Rocha |
+| Oliveira    |
+| Pereira     |
+| Luz         |
+| Ferreira    |
+| Estrada     |
+| Coelho      |
+| Goveia      |
++-------------+
+12 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select distinct Sobrenome from Funcionario;
++-------------+
+| Sobrenome   |
++-------------+
+| Silva       |
+| Coelho      |
+| Ferreira    |
+| Silveira    |
+| de la Rocha |
+| Oliveira    |
+| Pereira     |
+| Luz         |
+| Estrada     |
+| Goveia      |
++-------------+
+10 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Departamento
+    -> ;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     15000 |
+|              2 | TI                         |     60000 |
+|              3 | Gestão de Pessoas          |    150000 |
+|              4 | Pesquisa e Desenvolvimento |      7500 |
+|              5 | Jurídico                   |      1000 |
++----------------+----------------------------+-----------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select dNome from Departamento where Orcamento > 15000;
++--------------------+
+| dNome              |
++--------------------+
+| TI                 |
+| Gestão de Pessoas  |
++--------------------+
+2 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario where Sobrenome = "Coelho" and Sobrenome = "Pereira";
+Empty set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario where Sobrenome = "Coelho";
++---------------+-----------+-----------+----------------+
+| idFuncionario | Nome      | Sobrenome | idDepartamento |
++---------------+-----------+-----------+----------------+
+|           152 | Arnaldo   | Coelho    |              1 |
+|           845 | Elizabeth | Coelho    |              1 |
++---------------+-----------+-----------+----------------+
+2 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario where Sobrenome = "Coelho" or Sobrenome = "Pereira";
++---------------+-----------+-----------+----------------+
+| idFuncionario | Nome      | Sobrenome | idDepartamento |
++---------------+-----------+-----------+----------------+
+|           152 | Arnaldo   | Coelho    |              1 |
+|           546 | José      | Pereira   |              4 |
+|           845 | Elizabeth | Coelho    |              1 |
++---------------+-----------+-----------+----------------+
+3 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario where Sobrenome = "Coelho" or Sobrenome = "Pereira" order by Nome;
++---------------+-----------+-----------+----------------+
+| idFuncionario | Nome      | Sobrenome | idDepartamento |
++---------------+-----------+-----------+----------------+
+|           152 | Arnaldo   | Coelho    |              1 |
+|           845 | Elizabeth | Coelho    |              1 |
+|           546 | José      | Pereira   |              4 |
++---------------+-----------+-----------+----------------+
+3 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario where idDepartamento = 1;
++---------------+-----------+-----------+----------------+
+| idFuncionario | Nome      | Sobrenome | idDepartamento |
++---------------+-----------+-----------+----------------+
+|           123 | Julio     | Silva     |              1 |
+|           152 | Arnaldo   | Coelho    |              1 |
+|           332 | José      | Oliveira  |              1 |
+|           845 | Elizabeth | Coelho    |              1 |
+|           846 | Joaquim   | Goveia    |              1 |
++---------------+-----------+-----------+----------------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where idDepartamento = 1 or idDepartamento = 2;
++-----------+
+| Nome      |
++-----------+
+| Julio     |
+| Arnaldo   |
+| Carol     |
+| João      |
+| José      |
+| Elizabeth |
+| Joaquim   |
++-----------+
+7 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome = "%eira" order by Nome,Sobrenome;
+Empty set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome = "%eira";
+Empty set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome = "%eira";
+Empty set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome = '%eira';
+Empty set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+12 rows in set (0.01 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome like "%eira";
++----------+
+| Nome     |
++----------+
+| Carol    |
+| João     |
+| José     |
+| José     |
+| Zacarias |
++----------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome like "%eira" order by Nome,Sobrenome;
++----------+
+| Nome     |
++----------+
+| Carol    |
+| João     |
+| José     |
+| José     |
+| Zacarias |
++----------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome like "%eira" order by Nome;
++----------+
+| Nome     |
++----------+
+| Carol    |
+| João     |
+| José     |
+| José     |
+| Zacarias |
++----------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select Nome from Funcionario where Sobrenome like "%eira" order by Nome,Sobrenome;
++----------+
+| Nome     |
++----------+
+| Carol    |
+| João     |
+| José     |
+| José     |
+| Zacarias |
++----------+
+5 rows in set (0.01 sec)
+
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     15000 |
+|              2 | TI                         |     60000 |
+|              3 | Gestão de Pessoas          |    150000 |
+|              4 | Pesquisa e Desenvolvimento |      7500 |
+|              5 | Jurídico                   |      1000 |
++----------------+----------------------------+-----------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select SUM(Orcamento) from Departamento;
++----------------+
+| SUM(Orcamento) |
++----------------+
+|         233500 |
++----------------+
+1 row in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+12 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select idDepartamento, COUNT(*) from Funcionario;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'lab02vinicius.Funcionario.idDepartamento'; this is incompatible with sql_mode=only_full_group_by
+MySQL [lab02vinicius]> select idDepartamento, COUNT(*) from Funcionario group by idDepartamento;
++----------------+----------+
+| idDepartamento | COUNT(*) |
++----------------+----------+
+|              1 |        5 |
+|              2 |        2 |
+|              3 |        2 |
+|              4 |        3 |
++----------------+----------+
+4 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     15000 |
+|              2 | TI                         |     60000 |
+|              3 | Gestão de Pessoas          |    150000 |
+|              4 | Pesquisa e Desenvolvimento |      7500 |
+|              5 | Jurídico                   |      1000 |
++----------------+----------------------------+-----------+
+5 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> insert into Departamento (dNome, Orcamento) values (Compras, 100000);
+ERROR 1054 (42S22): Unknown column 'Compras' in 'field list'
+MySQL [lab02vinicius]> insert into Departamento (dNome, Orcamento) values ("Compras", 100000);
+ERROR 1364 (HY000): Field 'idDepartamento' doesn't have a default value
+MySQL [lab02vinicius]> insert into Departamento (idDepartamento, dNome, Orcamento) values (6, "Compras", 100000);
+Query OK, 1 row affected (0.00 sec)
+
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     15000 |
+|              2 | TI                         |     60000 |
+|              3 | Gestão de Pessoas          |    150000 |
+|              4 | Pesquisa e Desenvolvimento |      7500 |
+|              5 | Jurídico                   |      1000 |
+|              6 | Compras                    |    100000 |
++----------------+----------------------------+-----------+
+6 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+12 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (786, "Juliano", "Souza", 6);
+Query OK, 1 row affected (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           786 | Juliano   | Souza       |              6 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+13 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     15000 |
+|              2 | TI                         |     60000 |
+|              3 | Gestão de Pessoas          |    150000 |
+|              4 | Pesquisa e Desenvolvimento |      7500 |
+|              5 | Jurídico                   |      1000 |
+|              6 | Compras                    |    100000 |
++----------------+----------------------------+-----------+
+6 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> UPDATE Departamento SET Orcamento := (Orcamento - (Orcamento*0.1));
+Query OK, 6 rows affected (0.00 sec)
+Rows matched: 6  Changed: 6  Warnings: 0
+
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     13500 |
+|              2 | TI                         |     54000 |
+|              3 | Gestão de Pessoas          |    135000 |
+|              4 | Pesquisa e Desenvolvimento |      6750 |
+|              5 | Jurídico                   |       900 |
+|              6 | Compras                    |     90000 |
++----------------+----------------------------+-----------+
+6 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           786 | Juliano   | Souza       |              6 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+13 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> DELETE * FROM Funcionario WHERE idDepartamento IN (select idDepartamento from Departamento where dNome = "Pesquisa e Desenvolvimento");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* FROM Funcionario WHERE idDepartamento IN (select idDepartamento from Departame' at line 1
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           786 | Juliano   | Souza       |              6 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+13 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     13500 |
+|              2 | TI                         |     54000 |
+|              3 | Gestão de Pessoas          |    135000 |
+|              4 | Pesquisa e Desenvolvimento |      6750 |
+|              5 | Jurídico                   |       900 |
+|              6 | Compras                    |     90000 |
++----------------+----------------------------+-----------+
+6 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> DELETE * FROM Funcionario WHERE idDepartamento IN (select idDepartamento from Departamento where dNome = "Pesquisa e Desenvolvimento");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* FROM Funcionario WHERE idDepartamento IN (select idDepartamento from Departame' at line 1
+MySQL [lab02vinicius]> DELETE * FROM Funcionario WHERE idDepartamento = 4;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* FROM Funcionario WHERE idDepartamento = 4' at line 1
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              4 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              4 |
+|           745 | Eric      | Estrada     |              4 |
+|           786 | Juliano   | Souza       |              6 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+13 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     13500 |
+|              2 | TI                         |     54000 |
+|              3 | Gestão de Pessoas          |    135000 |
+|              4 | Pesquisa e Desenvolvimento |      6750 |
+|              5 | Jurídico                   |       900 |
+|              6 | Compras                    |     90000 |
++----------------+----------------------------+-----------+
+6 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> UPDATE Funcionario SET idDepartamento = 2 WHERE idDepartamento = 4;
+Query OK, 3 rows affected (0.00 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           222 | Carol     | Ferreira    |              2 |
+|           326 | João      | Silveira    |              2 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           546 | José      | Pereira     |              2 |
+|           631 | David     | Luz         |              3 |
+|           654 | Zacarias  | Ferreira    |              2 |
+|           745 | Eric      | Estrada     |              2 |
+|           786 | Juliano   | Souza       |              6 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+13 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (123, "Paulo", "Aguiar", 2);
+ERROR 1062 (23000): Duplicate entry '123' for key 'PRIMARY'
+MySQL [lab02vinicius]> delete * from Funcionario where idDepartamento = 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* from Funcionario where idDepartamento = 2' at line 1
+MySQL [lab02vinicius]> delete from Funcionario where idDepartamento = 2;
+Query OK, 5 rows affected (0.01 sec)
+
+MySQL [lab02vinicius]> DELETE FROM Funcionario WHERE idDepartamento = 4;
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [lab02vinicius]> select * from Departamento;
++----------------+----------------------------+-----------+
+| idDepartamento | dNome                      | Orcamento |
++----------------+----------------------------+-----------+
+|              1 | Financeiro                 |     13500 |
+|              2 | TI                         |     54000 |
+|              3 | Gestão de Pessoas          |    135000 |
+|              4 | Pesquisa e Desenvolvimento |      6750 |
+|              5 | Jurídico                   |       900 |
+|              6 | Compras                    |     90000 |
++----------------+----------------------------+-----------+
+6 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> DELETE FROM Departamento WHERE dNome = "Financeiro";
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`lab02vinicius`.`Funcionario`, CONSTRAINT `fk_Funcionario_Departamento` FOREIGN KEY (`idDepartamento`) REFERENCES `Departamento` (`idDepartamento`))
+MySQL [lab02vinicius]> delete from Funcionario where idDepartamento = 2;
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> 
+MySQL [lab02vinicius]> select * from Funcionario;
++---------------+-----------+-------------+----------------+
+| idFuncionario | Nome      | Sobrenome   | idDepartamento |
++---------------+-----------+-------------+----------------+
+|           123 | Julio     | Silva       |              1 |
+|           152 | Arnaldo   | Coelho      |              1 |
+|           331 | George    | de la Rocha |              3 |
+|           332 | José      | Oliveira    |              1 |
+|           631 | David     | Luz         |              3 |
+|           786 | Juliano   | Souza       |              6 |
+|           845 | Elizabeth | Coelho      |              1 |
+|           846 | Joaquim   | Goveia      |              1 |
++---------------+-----------+-------------+----------------+
+8 rows in set (0.00 sec)
+
+MySQL [lab02vinicius]> insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (160, "Pedro", "Ramos", 1);
+Query OK, 1 row affected (0.00 sec)
+
+MySQL [lab02vinicius]> insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (340, "Maria", "Pinto", 6);
+Query OK, 1 row affected (0.01 sec)
+
+MySQL [lab02vinicius]> insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (800, "Roberto", "Ribeiro", 6);
+Query OK, 1 row affected (0.00 sec)
+
+MySQL [lab02vinicius]> 

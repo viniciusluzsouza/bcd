@@ -1,0 +1,67 @@
+CREATE TABLE Aluno (matricula INT NOT NULL AUTO_INCREMENT, nome VARCHAR(80), email
+VARCHAR(80), PRIMARY KEY (matricula));
+
+mysql -h ampto.sj.ifsc.edu.br -P33060 -u vinicius -p
+mysql lab02vinicius < lab02.sql -h ampto.sj.ifsc.edu.br -P33060 -u vinicius -p
+
+
+1. Liste o sobrenome de todos os funcionários;
+select Sobrenome from Funcionario;
+
+2. Liste o sobrenome de todos os funcionários, porém sem duplicatas;
+select distinct Sobrenome from Funcionario;
+
+3. Liste o nome de todos os departamentos cujo orçamento seja maior que 15.000, 00;
+select dNome from Departamento where Orcamento > 15000;
+
+4. Liste todos os dados de todos os funcionários cujo sobrenome seja “Coelho” ou “Pereira” e apresente o resultado ordenado pelo nome do funcionário;
+select * from Funcionario where Sobrenome = "Coelho" or Sobrenome = "Pereira" order by Nome;
+
+5. Liste todos os dados de todos os funcionários que trabalham no departamento 1;
+select * from Funcionario where idDepartamento = 1;
+
+
+6. Liste os nomes de todos os funcionários que trabalham nos departamentos 1 ou 2;
+select Nome from Funcionario where idDepartamento = 1 or idDepartamento = 2;
+
+7. Liste os nomes de todos os funcionários cujo sobrenome termine em eira e apresente o resultado ordenado pelo nome e sobrenome;
+select Nome from Funcionario where Sobrenome like "%eira" order by Nome,Sobrenome;
+
+8. Liste a soma dos orçamentos de todos os departamentos;
+select SUM(Orcamento) from Departamento;
+
+9. Liste o total de funcionários de cada departamento. Atenção: só é necessário informar o código do departamento e o total de funcionários;
+select idDepartamento, COUNT(*) from Funcionario group by idDepartamento;
+
+10. Adicione um departamento Compras com o orçamento de 100.000, 00 e adicione um funcionário “Juliano Souza”, com matrícula 786, nesse novo departamento;
+insert into Departamento (idDepartamento, dNome, Orcamento) values (6, "Compras", 100000);
+insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (786, "Juliano", "Souza", 6);
+
+11. Reduzir em 10% o orçamento de todos os departamentos;
+UPDATE Departamento SET Orcamento := (Orcamento - (Orcamento*0.1));
+
+
+12. Exclua o departamento “Pesquisa e desenvolvimento”;
+DELETE FROM Departamento WHERE dNome = "Financeiro";
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`lab02vinicius`.`Funcionario`, CONSTRAINT `fk_Funcionario_Departamento` FOREIGN KEY (`idDepartamento`) REFERENCES `Departamento` (`idDepartamento`))
+
+
+13. Migrar todos os funcionários do departamento “Pesquisa e desenvolvimento” para o departamento de “TI”.
+UPDATE Funcionario SET idDepartamento = 2 WHERE idDepartamento = 4;
+
+
+14. Adicione o funcionário “Paulo Aguiar”, com idFuncionario = 123, no departamento de TI;
+MySQL [lab02vinicius]> insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (123, "Paulo", "Aguiar", 2);
+ERROR 1062 (23000): Duplicate entry '123' for key 'PRIMARY'
+
+
+15. Exclua todos os funcionários do departamento de TI
+delete from Funcionario where idDepartamento = 2;
+
+16. Adicione 3 novos funcionários no departamento Financeiro;
+insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (160, "Pedro", "Ramos", 1);
+insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (340, "Maria", "Pinto", 6);
+insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (800, "Roberto", "Ribeiro", 6);
+
+
+
