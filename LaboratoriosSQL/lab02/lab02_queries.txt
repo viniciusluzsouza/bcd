@@ -64,4 +64,117 @@ insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values 
 insert into Funcionario (idFuncionario, Nome, Sobrenome, idDepartamento) values (800, "Roberto", "Ribeiro", 6);
 
 
+17. Tendo como base o exemplo apresentado na Figura 1, crie, usando SQL, uma relação para
+Cor e uma relação para Autom´ovel e represente corretamente o relacionamento entre essas
+entidades, conforme ilustrado pelo diagrama ER da Figura 2a. É necessário indicar quais
+atributos são de preenchimento obrigatório (NOT NULL).
+
+CREATE TABLE Cor (
+	idCor INT NOT NULL,
+	nome VARCHAR(45) NOT NULL,
+	fabricante VARCHAR(45) NOT NULL,
+	PRIMARY KEY (idCor));
+
+CREATE TABLE Automovel (
+	idAutomovel INT NOT NULL,
+	idCor INT NOT NULL,
+	modelo varchar(255) NOT NULL,
+	chassi varchar(255) NOT NULL,
+	PRIMARY KEY (idAutomovel),
+	CONSTRAINT fk_Automovel_Cor FOREIGN KEY (idCor)
+	REFERENCES Cor (idCor));
+
+18. Insira 5 carros na relação Automóvel com os valores que desejar para cada atributo.
+insert into Cor (idCor, nome, fabricante) values (1, "branco", "fabricante1");
+insert into Cor (idCor, nome, fabricante) values (2, "preto", "fabricante2");
+insert into Cor (idCor, nome, fabricante) values (3, "vermelho", "fabricante3");
+
+insert into Automovel (idAutomovel, idCor, modelo, chassi) values (1, 1, "Gol", "A01B01C01D01");
+insert into Automovel (idAutomovel, idCor, modelo, chassi) values (2, 2, "Fox", "A01B01C01D02");
+insert into Automovel (idAutomovel, idCor, modelo, chassi) values (3, 2, "Fusca", "A01B01C01D03");
+insert into Automovel (idAutomovel, idCor, modelo, chassi) values (4, 1, "Golf", "A01B01C01D04");
+insert into Automovel (idAutomovel, idCor, modelo, chassi) values (5, 3, "UP", "A01B01C01D05");
+
+
+19. Tendo como base o exemplo apresentado na Figura 1, crie, usando SQL, uma relação para
+Assunto e uma relação para Senha e represente corretamente o relacionamento entre essas
+entidades, conforme ilustrado pelo diagrama ER da Figura 2b. É necessário indicar quais
+atributos são de preenchimento obrigatório (NOT NULL).
+CREATE TABLE Assunto (
+	idAssunto INT NOT NULL,
+	descricao VARCHAR(255) NOT NULL,
+	PRIMARY KEY (idAssunto));
+
+CREATE TABLE Senha (
+	idSenha INT NOT NULL,
+	numero INT NOT NULL,
+	idAssunto INT NOT NULL,
+	gerada DATETIME NOT NULL,
+	inicioAtendimento DATETIME NOT NULL,
+	fimAtendimento DATETIME NOT NULL,
+	PRIMARY KEY (idSenha),
+	CONSTRAINT fk_Senha_Assunto FOREIGN KEY (idAssunto)
+	REFERENCES Assunto (idAssunto));
+
+20. Insira os seguintes assuntos: “Pagamentos”, “Cadastro”, “Cancelamento” e “Outros”.
+insert into Assunto (idAssunto, descricao) values (1, "Pagamentos");
+insert into Assunto (idAssunto, descricao) values (2, "Cadastro");
+insert into Assunto (idAssunto, descricao) values (3, "Cancelamento");
+insert into Assunto (idAssunto, descricao) values (4, "Outros");
+
+21. Insira dez senhas e para cada só informe os valores obrigatórios. Três senhas deverão ter
+como assunto “Pagamento”, duas senhas deverão ter como assunto “Cadastro” e as demais
+deverão ter como assunto “Outros”.
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (1, 100, 1, "2019-09-10 07:00:00", "2019-09-10 07:10:00", "2019-09-10 07:20:00");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (2, 101, 1, "2019-09-10 08:01:32", "2019-09-10 08:05:11", "2019-09-10 08:07:22");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (3, 102, 1, "2019-09-10 08:26:28", "2019-09-10 08:30:18", "2019-09-10 08:45:12");
+
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (4, 103, 2, "2019-09-10 09:05:01", "2019-09-10 09:15:18", "2019-09-10 09:35:19");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (5, 104, 2, "2019-09-10 09:52:12", "2019-09-10 09:53:05", "2019-09-10 09:54:44");
+
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (6, 105, 4, "2019-09-10 10:10:01", "2019-09-10 10:13:12", "2019-09-10 10:15:53");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (7, 106, 4, "2019-09-10 10:20:31", "2019-09-10 10:26:23", "2019-09-10 10:44:13");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (8, 107, 4, "2019-09-10 10:21:12", "2019-09-10 10:46:52", "2019-09-10 11:01:09");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (9, 108, 4, "2019-09-10 11:01:11", "2019-09-10 11:03:33", "2019-09-10 11:10:22");
+insert into Senha (idSenha, numero, idAssunto, gerada, inicioAtendimento, fimAtendimento)
+	values (10, 109, 4, "2019-09-10 11:04:21", "2019-09-10 11:15:53", "2019-09-10 11:42:19");
+
+
+22. Atualize quatro das senhas criadas no exercício anterior, adicionando um horário do início
+do atendimento diferente para cada senha.
+UPDATE Senha SET inicioAtendimento = "2019-09-10 07:09:10" WHERE idSenha = 1;
+UPDATE Senha SET inicioAtendimento = "2019-09-10 09:52:30" WHERE idSenha = 5;
+UPDATE Senha SET inicioAtendimento = "2019-09-10 10:41:16" WHERE idSenha = 8;
+UPDATE Senha SET inicioAtendimento = "2019-09-10 11:18:07" WHERE idSenha = 10;
+
+23. Atualize três das senhas do exercício anterior, adicionando o horário do término do atendimento.
+UPDATE Senha SET fimAtendimento = "2019-09-10 08:09:23" WHERE idSenha = 2;
+UPDATE Senha SET fimAtendimento = "2019-09-10 09:37:04" WHERE idSenha = 4;
+UPDATE Senha SET fimAtendimento = "2019-09-10 10:43:55" WHERE idSenha = 7;
+
+24. Liste o número e o horário das senhas que ainda não foram atendidas e ordenadas pelo
+número da senha.
+select numero, gerada from Senha where fimAtendimento is NULL;
+select numero, gerada from Senha where fimAtendimento is NOT NULL;
+
+25. Liste o número da próxima senha a ser chamada, considerando que seria a senha com o
+menor número dentre aquelas que ainda não foram atendidas.
+select MIN(numero) from Senha where fimAtendimento is NULL;
+select MIN(numero) from Senha where fimAtendimento is NOT NULL;
+
+26. Liste o total de senhas não atendidas separadas por assunto.
+select idAssunto, COUNT(*) from Senha where fimAtendimento is NULL group by idAssunto;
+select idAssunto, COUNT(*) from Senha where fimAtendimento is NOT NULL group by idAssunto;
+
+27. Liste o tempo médio do atendimento em minutos. (Dica: veja função TimeStampDiff)
+select AVG(TimeStampDiff(MINUTE, inicioAtendimento, fimAtendimento)) from Senha;
 
