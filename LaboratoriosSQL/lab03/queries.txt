@@ -1,0 +1,29 @@
+
+
+select Nome,Sobrenome,dNome from Funcionario NATURAL JOIN Departamento;
+(select idPessoa from Correntista) UNION ALL (select idPessoa from Mutuario);
+
+(select nome from Pessoa NATURAL JOIN Correntista) UNION (select nome from Pessoa NATURAL JOIN Mutuario);
+(select nome from Pessoa NATURAL JOIN Correntista) UNION ALL (select nome from Pessoa NATURAL JOIN Mutuario);
+
+## Exercicios
+1) select * from Funcionario NATURAL JOIN Departamento;
+2) select nome, dNome from Funcionario NATURAL JOIN Departamento;
+3) select nome, sobrenome from Funcionario NATURAL JOIN Departamento where Orcamento > 60000;
+4) select dNome from Funcionario NATURAL JOIN Departamento GROUP BY dNome HAVING COUNT(*) > 2;
+select dNome,count(*) as total from Funcionario NATURAL JOIN Departamento GROUP BY dNome;
+select dNome,count(*) as total from Funcionario NATURAL JOIN Departamento GROUP BY dNome HAVING COUNT(*) > 2;
+
+
+
+select cpfPresidente from Empresa where idEmpresa IN (select idEmpresa from Produto where ufFabrica = 'SC') AND idEmpresa IN (select idEmpresa from Produto where ufFabrica = 'SP');
+
+select nome from Disciplina where idDisc IN (select idDisc from Disciplina where semestre = 2 AND ano = 2014) AND idDisc IN (select idDisc from Disciplina where semestre = 1 AND ano = 2017);
+
+SELECT AVG(valor) AS valorMedio FROM Emprestimo GROUP BY idAgencia;
+select SUM(valorMedio) FROM (SELECT AVG(valor) as valorMedio FROM Emprestimo GROUP BY idAgencia) AS Resultado;
+
+
+select nome, cargo, salario from Funcionario where salario > SOME (select salario from Funcionario WHERE cargo = 'Analista');
+
+select nome, cargo, salario from Funcionario where salario > ALL (select salario from Funcionario WHERE cargo = 'Analista');
