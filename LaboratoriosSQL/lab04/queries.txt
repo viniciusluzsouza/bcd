@@ -1,0 +1,58 @@
+1. Liste o nome, sobrenome e dia dos funcionários aniversariantes do mês de março.
+select surname, forenames, day(dob) from employee where month(dob) = 03;
+
+2. Liste o nome de todos os funcionários que assumiram o cargo de contador (Accountant) em
+1980.
+select surname,startdate from employee natural join jobhistory where position = 'Accountant' and year(startdate) = 1980;
+
+3. Um funcionário, durante seu tempo de trabalho na empresa, pode assumir diferentes cargos.
+Para todo cargo é registrado a data que o funcionário assumiu e a data que ele saiu do
+cargo, caso tenha saído. Não é permitido que um funcionário tenha mais de um cargo ativo.
+Se um funcionário não faz mais parte da equipe da empresa, então todos os cargos que
+esse já assumiu estarão obrigatoriamente com data que ele saiu do cargo.
+Fazendo uso de subconsulta, liste o número e nome de todos os funcionários que ainda
+trabalham na empresa.
+select empno, surname from employee where empno in (select empno from jobhistory where enddate is NULL);
+
+4. Liste o nome e o cargo atual de todos os funcionários.
+select surname, position from employee natural join jobhistory f where f.enddate is NULL;
+
+5. Liste o total de salários agrupados por departamento
+select dname, sum(r.salary) as total from department natural join (select empno, depno, salary from employee natural join jobhistory f where f.enddate is NULL) as r group by dname;
+
+6. Liste o total da folha de pagamento
+select sum(r.salary) as total from department natural join (select empno, depno, salary from employee natural join jobhistory f where f.enddate is NULL) as r;
+
+7. Fazendo uso de subconsulta, liste o número, nome e sobrenome de todos os funcionários que nunca fizeram um curso
+select empno, surname, forenames from employee where empno not in (select empno from empcourse);
+
+8. Fazendo uso de subconsulta, liste os nomes das pessoas que fizeram algum curso em 1988.
+select surname from employee e where e.empno in (select empno from empcourse natural join course where year(cdate) = 1988);
+
+9. Liste o nome do departamento e o total de funcionários de cada departamento
+select dname, count(*) as total from department natural join employee group by dname;
+select dname, count(*) as total from department natural join employee natural join jobhistory where enddate is NULL group by dname;
+
+10. Liste o total de pessoas, agrupadas por departamento que fez cada curso. É necessário listar o nome do departamento, nome do curso e o total de pessoas que fez esse curso.
+select dname, cname, count(*) as total from course natural join empcourse natural join department natural join employee group by dname, cname;
+
+11. Para cada departamento, liste o maior salário.
+select dname, max(salary) from department natural join employee natural join jobhistory group by dname;
+
+12. Dos maiores salários encontrados no exercício anterior, liste o menor deles.
+select min(maxsal) from (select dname, max(salary) as maxsal from department natural join employee natural join jobhistory group by dname) as r;
+
+13. Migre todos os funcionários do departamento accounts para o departamento engineering.
+Você só deve usar os nomes dos departamentos (dname) e não poderá referenciar diretamente os códigos dos departamentos (depno).
+
+update employee set depno = (select depno from department where dname = 'accounts') where depno = (select depno from department where dname = 'engineering');
+
+
+14. Exclua todos os funcionários que estejam lotados no departamento accounts. Você deve usar o nome do departamento.
+elete from employee where depno = (select depno from department where dname = 'accounts');
+
+15. Exclua todos os funcionários que estejam lotados no departamento engineering. Você
+deve usar o nome do departamento.
+delete from employee where depno = (select depno from department where dname = 'engineering');
+
+
