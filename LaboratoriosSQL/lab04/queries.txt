@@ -49,10 +49,47 @@ update employee set depno = (select depno from department where dname = 'account
 
 
 14. Exclua todos os funcionários que estejam lotados no departamento accounts. Você deve usar o nome do departamento.
-elete from employee where depno = (select depno from department where dname = 'accounts');
+delete from employee where depno = (select depno from department where dname = 'accounts');
 
 15. Exclua todos os funcionários que estejam lotados no departamento engineering. Você
 deve usar o nome do departamento.
 delete from employee where depno = (select depno from department where dname = 'engineering');
+
+=========================================
+
+Parte 2. Esquema Sakila
+Para as questões 16– 27, considere a base de dados de uma locadora de DVD (base Sakila1),
+cuja modelagem está na última página dessa lista de exercício e sua descrição está disponível
+em http://docente.ifsc.edu.br/mello/bcd/labs/lab04-sakila-en.a4.pdf.
+
+16. Liste o nome de todos idiomas em ordem alfabética;
+select name from language order by name;
+
+17. Liste o nome e o endereço de todos os clientes que tenham o district vazio.
+select first_name, address from customer c inner join address a on c.address_id = a.address_id where a.district = "";
+
+18. Liste o nome de todas as categorias de filmes e o total de filmes por categoria. Ordene o
+resultado pelo número de filmes de cada categoria.
+select name, count(*) as total from film f inner join film_category fc on f.film_id = fc.film_id inner join category c on fc.category_id = c.category_id group by c.name;
+
+19. Para todos os filmes, liste o título do filme e o nome de sua categoria, ordenado pela categoria.
+select title, name from film f inner join film_category fc on f.film_id = fc.film_id inner join category c on fc.category_id = c.category_id order by name;
+
+20. Liste todos os clientes que ainda não alugaram um filme.
+select first_name from customer where customer_id not in (select customer_id from rental);
+
+21. Liste o total de cópias de cada filme existente na loja 1.
+select title, count(*) from store s inner join inventory i on s.store_id = i.store_id inner join film f on i.film_id = f.film_id where s.store_id = 1 group by f.film_id;
+
+22. Liste todos os dados das locações de DVD da loja 1 e que ainda não foram devolvidos.
+select * from rental r inner join customer c on r.customer_id = c.customer_id inner join store s on c.store_id = s.store_id where s.store_id = 1 and return_date is NULL;
+
+23. O cliente 168 devolveu o DVD 4416. Atualize a tabela de aluguéis, inserindo a data de hoje
+como data de retorno.
+update rental set return_date = now() where customer_id = 168 and inventory_id = 4416;
+
+
+
+
 
 
