@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Listar</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pessoa in lista_pessoas %}
+                <tr>
+                    <td>{{ pessoa.idPessoa }}</td>
+                    <td>{{ pessoa.nome }}</td>
+                    <td><a href="/excluir?id={{ pessoa.idPessoa }}">excluir</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><a href="/">Inicio</a></p>
+{% endblock %}
