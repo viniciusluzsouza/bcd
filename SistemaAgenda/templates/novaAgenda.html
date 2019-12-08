@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<h2 align="center">Cadastrar Agenda</h2>
+<br>
+
+<div class="container center_div" style="width: 75%;">
+    <form action="{{ url_for('novaAgenda') }}" method="POST" novalidate>
+      <div class="form-group">
+        <label>{{ formulario.nome.label }}</label>
+        {{ formulario.nome(class="form-control") }}
+      </div>
+      <div class="form-group">
+        <label>{{ formulario.descricao.label }}</label>
+        {{ formulario.descricao(class="form-control") }}
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-2 col-lg-2 col-xl-2">
+        <label>{{ formulario.dataInicio.label }}</label>
+        {{ formulario.dataInicio(class="form-control", type="date") }}
+        </div>
+        <div class="form-group col-2 col-lg-2 col-xl-2">
+        <label>{{ formulario.horarioInicio.label }}</label>
+        {{ formulario.horarioInicio(class="form-control", type="time") }}
+        </div>
+        <div class="form-group col-md-2 col-lg-2 col-xl-2">
+        <label>{{ formulario.dataFim.label }}</label>
+        {{ formulario.dataFim(class="form-control", type="date") }}
+        </div>
+        <div class="form-group col-2 col-lg-2 col-xl-2">
+        <label>{{ formulario.horarioFim.label }}</label>
+        {{ formulario.horarioFim(class="form-control", type="time") }}
+        </div>
+        <div class="form-group col-2 col-lg-2 col-xl-2">
+        <label>{{ formulario.vagas.label }}</label>
+        {{ formulario.vagas(class="form-control", type="number") }}
+        </div>
+        <div class="form-group col-md-2 col-lg-2 col-xl-2">
+          <label>Novo Horario</label>
+<!--            <button type="submit" class=" form-control btn btn-warning"><b>+</b></button>-->
+            {{ formulario.adicionaHorario(class="form-control btn btn-warning") }}
+        </div>
+      </div>
+
+
+  <div>
+    <table class="table table-hover" align="center" style="width: 50%;">
+      <thead>
+        <tr>
+          <th scope="col">Inicio</th>
+          <th scope="col">Fim</th>
+          <th scope="col">Vagas</th>
+          <th scope="col">Remover</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for h in formulario.horarios %}
+            <tr>
+              <td>{{ h.get('inicio') }}</td>
+              <td>{{ h.get('fim') }}</td>
+              <td>{{ h.get('vagas') }}</td>
+              <td>{{ formulario.removeHorario(class="btn btn-danger", **{'test': 'testAA'}) }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+    <div class="form-row text-center col-md-12 col-lg-12 col-xl-12" style="padding-top: 50px">
+        <div class="form-check">
+          {{ formulario.ativa(class="form-check-input", checked="true") }}
+          <label>{{ formulario.ativa.label }}</label>
+        </div>
+      </div>
+
+      <div class="form-row text-center col-md-12 col-lg-12 col-xl-12" style="padding: 15px">
+        {{ formulario.adicionar(class="form-control btn btn-primary", style="width: 15%;") }}
+        {{ formulario.cancelar(class="form-control btn btn-danger", style="width: 15%;") }}
+      </div>
+
+    </form>
+</div>
+
+
+
+</div>
+
+{% endblock %}

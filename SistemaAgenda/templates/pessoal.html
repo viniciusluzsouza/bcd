@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+    <h3 align="center">{{ usuario }}</h3>
+    <br>
+    <table class="table table-hover" align="center" style="width: 50%;">
+      <thead>
+        <tr>
+            {% for c in columns %}
+                <th scope="col">{{ c }}</th>
+            {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in data %}
+            <tr class='clickable-row'
+                data-href="{{ url_for('detalhesAgenda', idAgenda=d['idAgenda']) }}"
+                method=GET>
+                {% for l in d['lines'] %}
+                    <td>{{ l }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <br>
+
+    <div align="center">
+        <div style="padding: 15px">
+            <a href="/novaAgenda" class="btn btn-primary" role="button" style="font-size : 16px; width: 10%; height: 30px;">Nova agenda</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+    <script type='text/javascript'>
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+    </script>
+{% endblock %}
+
+
+

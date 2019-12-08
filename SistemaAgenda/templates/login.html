@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="container center_div" style="font-size : 25px; width: 25%; height: 50px;">
+<div align="center"><h3>Faça o login</h3></div>
+
+    <form align="center" action="{{ url_for('autenticacao') }}" method="POST" novalidate>
+
+        {{ formulario.hidden_tag() }}
+
+        <div align="center">
+            {{ formulario.username(size=30, placeholder="Usuario") }}
+            {% for erro in formulario.username.errors %}
+                <span style="color: red">*{{ erro }}<br></span>
+            {% endfor %}
+            </div>
+        <div align="center">
+            {{ formulario.senha(size=30, placeholder="Senha") }}
+            {% for erro in formulario.senha.errors %}
+                <span style="color: red">*{{ erro }}<br></span>
+            {% endfor %}
+</div>
+        <div align="center">
+            {% if formulario.erroLogin %}
+                <span style="color: red">*{{ formulario.erroLogin }}<br></span>
+            {% endif %}
+
+            </div>
+        <br>
+        <div align="center">
+        {{ formulario.enviar() }}
+        </div>
+
+    </form>
+</div>
+<!--    <div class="container center_div" style="font-size : 25px; width: 20%; height: 50px;">-->
+<!--        <div align="center"><h3>Faça o login</h3></div>-->
+<!--        <form action="{{ url_for('autenticacao') }}" method="POST" novalidate>-->
+<!--          <div class="form-group" align="center">-->
+<!--            <input type="text" class="form-control" id="usuario" placeholder="Usuario">-->
+<!--          </div>-->
+<!--          <div class="form-group">-->
+<!--            <input type="password" class="form-control" id="senha" placeholder="Senha">-->
+<!--          </div>-->
+<!--            <div align="center">-->
+<!--                <button type="submit" class="btn btn-primary">Entrar</button>-->
+<!--                <button type="submit" class="btn btn-primary">Voltar</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+
+{% endblock %}

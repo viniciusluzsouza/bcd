@@ -1,0 +1,17 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block navbar %}
+
+    {{ nav.menunavbar.render() }}
+
+{% endblock %}
+
+{% block content %}
+
+    <h1>Minha aplicação</h1>
+
+    {% block app_content %}
+
+    {% endblock %}
+
+{% endblock %}

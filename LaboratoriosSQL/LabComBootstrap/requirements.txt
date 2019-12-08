@@ -1,0 +1,7 @@
+Flask
+Flask-WTF
+Flask-sqlalchemy
+Flask-login
+Flask-bootstrap
+Flask-nav
+Jinja2

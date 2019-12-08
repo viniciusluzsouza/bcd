@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="container center_div" style="width: 75%;">
+    <h2 align="center">Agenda: {{ dados['nome'] }}</h2>
+    <h4 align="center">{{ dados['descricao'] }}</h4>
+    <br><br>
+    <table class="table table-hover" align="center" style="font-size : 15px; border:4px">
+        <thead>
+            <th scope="col">Horário</th>
+            <th scope="col">Vagas</th>
+            <th scope="col">Vagas Disponíveis</th>
+            <th scope="col">Participantes</th>
+        </thead>
+        <tbody>
+            {% for h in dados['horarios'] %}
+                <tr>
+                    <td>{{ h.get('inicio') }} - {{ h.get('fim') }}</td>
+                    <td>{{ h.get('vagas') }}</td>
+                    <td>{{ h.get('vagasDisp') }}</td>
+                    {% if h.get('participantes', [])|length > 0 %}
+                        <td>
+                            {% for p in h['participantes'] %}
+                                {{ p }}
+                                <br>
+                            {% endfor %}
+                        </td>
+                    {% else %}
+                        <td>Não há inscritos</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br>
+    {% if dados['ativa'] %}
+        <p align="center" style="font-size : 20px;">A agenda está <b><font color="green">ativa</font></b></p>
+    {% else %}
+        <p align="center" style="font-size : 20px;">A agenda está <b><font color="red">inativa</font></b></p>
+    {% endif %}
+
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Autenticação</h1>
+
+    <form action="{{ url_for('autenticacao') }}" method="POST" novalidate>
+
+        {{ formulario.hidden_tag() }}
+
+        <p>
+            {{ formulario.username.label }}
+            <br>
+            {{ formulario.username(size=30) }}
+            {% for erro in formulario.username.errors %}
+                <span style="color: red">{{ erro }}</span>
+            {% endfor %}
+
+        <p>
+            {{ formulario.senha.label }}
+            <br>
+            {{ formulario.senha(size=30) }}
+            {% for erro in formulario.senha.errors %}
+                <span style="color: red">{{ erro }}</span>
+            {% endfor %}
+
+        <p>{{ formulario.enviar() }}
+
+    </form>
+
+{% endblock %}
