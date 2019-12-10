@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<div class="container center_div" style="width: 75%;">
+    <h2 align="center">Agenda: {{ dados['nomeAgenda'] }}</h2>
+    <br><br>
+    <table class="table table-hover" align="center" style="font-size : 15px; border:4px">
+        <thead>
+            <th scope="col">Inicio</th>
+            <th scope="col">Fim</th>
+            <th scope="col">Vagas Disponíveis</th>
+            <th scope="col">Inscrição</th>
+        </thead>
+        <tbody>
+            {% for h in dados['horarios'] %}
+                <tr>
+                    <td>{{ h.get('inicio') }}</td>
+                    <td>{{ h.get('fim') }}</td>
+                    <td>{{ h.get('vagasDisp') }}</td>
+                    <td>
+                        <div>
+                            <form class="form-inline" action="{{ url_for('detalhesAgendaUsuario', idHorarioInscricao=h['idHorario'], idAgenda=dados['idAgenda']) }}" method="POST" novalidate>
+                                {{ formulario.hidden_tag() }}
+                                <div class="form-group text-left col-md-12 col-lg-12 col-xl-12">
+                                    {{ formulario.nome(class="form-control", placeholder="Nome") }}
+                                    {{ formulario.inscrever(class="form-control btn btn-primary", href=url_for('detalhesAgendaUsuario', id=h.get('id'))) }}
+                                </div>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if 'inscricao' in dados %}
+        {% if 'erro' in dados['inscricao'] %}
+            <div class="container center_div" style="width: 75%;">
+                <p align="center">O horário de <b>{{ dados['inscricao']['inicio'] }}</b> até <b>{{ dados['inscricao']['fim'] }}</b> está <b>LOTADO</b></p>
+            </div>
+        {% else %}
+            <div class="container center_div" style="width: 75%;">
+                <p align="center">Inscrição realizada no horário de <b>{{ dados['inscricao']['inicio'] }}</b> até <b>{{ dados['inscricao']['fim'] }}</b> com nome <b>{{ dados['inscricao']['nome'] }}</b></p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+<!--{% block scripts %}-->
+<!--  {{ super() }}-->
+<!--    <script type='text/javascript'>-->
+<!--        $('form').submit(function(e) {-->
+<!--             e.preventDefault();-->
+
+<!--            console.log(e);-->
+
+<!--             return false;-->
+<!--        });-->
+<!--    </script>-->
+<!--{% endblock %}-->

@@ -8,6 +8,7 @@ class AutenticacaoForm(FlaskForm):
     senha = PasswordField('Senha', validators=[DataRequired('Campo obrigatório')])
     enviar = SubmitField('Entrar')
 
+
 class NovaAgendaForm(FlaskForm):
     nome = StringField('Nome da Agenda', validators=[DataRequired('Campo obrigatório')])
     descricao = StringField('Descrição')
@@ -23,5 +24,7 @@ class NovaAgendaForm(FlaskForm):
     ativa = BooleanField('Agenda ativa')
     horarios = []
 
-    def excluiHorarioLista(self, **kwargs):
-        print("executei")
+
+class InscreverForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired('Campo obrigatório')])
+    inscrever = SubmitField('Inscrever-se')

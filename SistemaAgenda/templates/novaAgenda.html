@@ -7,7 +7,7 @@
 <br>
 
 <div class="container center_div" style="width: 75%;">
-    <form action="{{ url_for('novaAgenda') }}" method="POST" novalidate>
+    <form id="formAdicionar" action="{{ url_for('novaAgenda') }}" method="POST" novalidate>
       <div class="form-group">
         <label>{{ formulario.nome.label }}</label>
         {{ formulario.nome(class="form-control") }}
@@ -61,7 +61,7 @@
               <td>{{ h.get('inicio') }}</td>
               <td>{{ h.get('fim') }}</td>
               <td>{{ h.get('vagas') }}</td>
-              <td>{{ formulario.removeHorario(class="btn btn-danger", **{'test': 'testAA'}) }}</td>
+              <td>{{ formulario.removeHorario(class="btn btn-danger", id="btnRemove", idRemover=h.get('id')) }}</td>
             </tr>
         {% endfor %}
       </tbody>
@@ -87,4 +87,19 @@
 
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+    <script type='text/javascript'>
+        $('form').submit(function(e) {
+             if (document.getElementById("btnRemove") !== null) {
+               var idRemover = document.getElementById("btnRemove").getAttribute("idRemover");
+               var novaUrl = document.getElementById("formAdicionar").getAttribute("action");
+               novaUrl = novaUrl + '?idRemover=' + idRemover;
+               console.log(novaUrl);
+               document.getElementById("formAdicionar").setAttribute("action", novaUrl);
+             }
+        });
+    </script>
 {% endblock %}

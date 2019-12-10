@@ -5,7 +5,7 @@ from werkzeug.utils import redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-from formularios import AutenticacaoForm, NovaAgendaForm
+from formularios import AutenticacaoForm, NovaAgendaForm, InscreverForm
 
 app = Flask(__name__)
 app.secret_key = "String Aleatoria"
@@ -159,7 +159,6 @@ def autenticacao():
     form = AutenticacaoForm()
 
     if form.validate_on_submit():   # Entrou via POST
-
         usuario = Usuario.query.filter_by(username=form.username.data).first_or_404()
         if usuario.verifica_senha(form.senha.data):
             session['logged_in'] = True
@@ -261,11 +260,13 @@ def novaAgenda():
             form.horarios.append(horario)
 
         elif form.removeHorario.data:
-            # Como identificar qual remover??
-            pass
+            idRemover = int(request.args.get('idRemover'))
+            for horario in form.horarios:
+                if horario['id'] == idRemover:
+                    form.horarios.remove(horario)
 
         elif form.cancelar.data:
-            print("veio por cancelar")
+            return redirect(url_for('pessoal'))
 
         elif form.adicionar.data:
             nomeAgenda = request.form.get("nome")
@@ -309,9 +310,52 @@ def agendaUsuario():
     dados = {'nomeUsuario': usuario.nomeUsuario + ' ' + usuario.sobrenome, 'agendas': agendas}
     return render_template('agendasUsuario.html', dados=dados)
 
-@app.route('/detalhesAgendaUsuario')
+@app.route('/detalhesAgendaUsuario', methods=['GET', 'POST'])
 def detalhesAgendaUsuario():
-    pass
+    form = InscreverForm()
+
+    idAgenda = None
+    dados = {}
+    if form.validate_on_submit():
+        idHorarioInscricao = int(request.args.get('idHorarioInscricao'))
+        nome = request.form.get("nome")
+        idAgenda = request.args.get("idAgenda")
+        dados['inscricao'] = {'idHorarioInscricao': idHorarioInscricao, 'nome': nome}
+
+        horario = Horario.query.filter_by(idHorario=idHorarioInscricao).first()
+        if len(horario.participantes) >= horario.vagas:
+            # Não pode se inscrever limite atingido.
+            dados['inscricao']['erro'] = True
+        else:
+            participante = Participante.query.filter_by(nomeParticipante=nome).first()
+            if participante is None:
+                participante = Participante(nomeParticipante=nome)
+
+            horario.participantes.append(participante)
+            db.session.commit()
+
+    else:
+        idAgenda = request.args.get('idAgenda')
+
+    if idAgenda is None:
+        return redirect(url_for('agendas'))
+
+    agenda = Agenda.query.filter_by(idAgenda=idAgenda).first()
+    if agenda is None:
+        return redirect(url_for('agendas'))
+
+    horarios = []
+    for h in agenda.horarios:
+        horario = {'idHorario': h.idHorario, 'inicio': h.dataInicio, 'fim': h.dataFim, 'vagas': h.vagas}
+        horario['vagasDisp'] = h.vagas - len(h.participantes)
+        horarios.append(horario)
+
+        if 'inscricao' in dados and dados['inscricao']['idHorarioInscricao'] == h.idHorario:
+            dados['inscricao']['inicio'] = h.dataInicio
+            dados['inscricao']['fim'] = h.dataFim
+
+    dados.update({'nomeAgenda': agenda.nomeAgenda, 'horarios': horarios, 'idAgenda': idAgenda})
+    return render_template('detalhesAgendaUsuario.html', dados=dados, formulario=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
