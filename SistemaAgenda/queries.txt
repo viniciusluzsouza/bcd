@@ -3,65 +3,65 @@ insert into Usuario (username, senha, nomeUsuario, sobrenome) values ("pedro", "
 insert into Usuario (username, senha, nomeUsuario, sobrenome) values ("maria", "1234", "Maria", "Coelho");
 insert into Usuario (username, senha, nomeUsuario, sobrenome) values ("bruna", "1234", "Bruna", "Pinto");
 
-insert into Agenda (nomeAgenda, descricao, idUsuario) values ("Monitoria Fisica", "Aula de monitoria fisica", 1);
+insert into Agenda (nomeAgenda, descricao, idUsuario, ativa) values ("Monitoria Fisica", "Aula de monitoria fisica", 1, 1);
 insert into Horario (idAgenda, vagas, dataInicio, dataFim) values (1, 10, STR_TO_DATE('02/12/2019 08:00:00 AM', '%d/%m/%Y %r'), STR_TO_DATE('02/12/2019 10:00:00 AM', '%d/%m/%Y %r'));
 insert into Horario (idAgenda, vagas, dataInicio, dataFim) values (1, 10, STR_TO_DATE('03/12/2019 09:00:00 AM', '%d/%m/%Y %r'), STR_TO_DATE('03/12/2019 11:00:00 AM', '%d/%m/%Y %r'));
 
-insert into Agenda (nomeAgenda, descricao, idUsuario) values ("Atendimento Paralelo", "Aula de atendimento paralelo de calculo", 2);
+insert into Agenda (nomeAgenda, descricao, idUsuario, ativa) values ("Atendimento Paralelo", "Aula de atendimento paralelo de calculo", 2, 1);
 insert into Horario (idAgenda, vagas, dataInicio, dataFim) values (2, 15, STR_TO_DATE('03/12/2019 1:30:00 PM', '%d/%m/%Y %r'), STR_TO_DATE('03/12/2019 5:30:00 PM', '%d/%m/%Y %r'));
 
-insert into Agenda (nomeAgenda, descricao, idUsuario) values ("Curso Programacao", "Curso programacao basico", 1);
+insert into Agenda (nomeAgenda, descricao, idUsuario, ativa) values ("Curso Programacao", "Curso programacao basico", 1, 1);
 insert into Horario (idAgenda, vagas, dataInicio, dataFim) values (3, 15, STR_TO_DATE('05/12/2019 7:30:00 AM', '%d/%m/%Y %r'), STR_TO_DATE('05/12/2019 5:30:00 PM', '%d/%m/%Y %r'));
 
-insert into Agenda (nomeAgenda, descricao, idUsuario) values ("Atendimento Paralelo", "Aula de atendimento paralelo de eletronica", 3);
+insert into Agenda (nomeAgenda, descricao, idUsuario, ativa) values ("Atendimento Paralelo", "Aula de atendimento paralelo de eletronica", 3, 1);
 insert into Horario (idAgenda, vagas, dataInicio, dataFim) values (4, 10, STR_TO_DATE('03/12/2019 1:30:00 PM', '%d/%m/%Y %r'), STR_TO_DATE('03/12/2019 5:30:00 PM', '%d/%m/%Y %r'));
 
 
+insert into Agenda (nomeAgenda, descricao, idUsuario, ativa) values ("Curso Eletronica", "Curso eletronica basica", 3, 0);
+insert into Horario (idAgenda, vagas, dataInicio, dataFim) values (5, 10, STR_TO_DATE('28/11/2019 1:30:00 PM', '%d/%m/%Y %r'), STR_TO_DATE('28/11/2019 5:30:00 PM', '%d/%m/%Y %r'));
+
 
 insert into Participante (nomeParticipante) values ("Renato");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (1,"Renato");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (1,"Renato");
 
 insert into Participante (nomeParticipante) value ("Roberto");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (1,"Roberto");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (1,"Roberto");
 
 insert into Participante (nomeParticipante) value ("Alice");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (1,"Alice");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (1,"Alice");
 
 insert into Participante (nomeParticipante) value ("Maria");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (2,"Maria");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (3,"Maria");
 
 insert into Participante (nomeParticipante) value ("Luis");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (2,"Luis");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (3,"Luis");
 
 insert into Participante (nomeParticipante) value ("Alberto");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (2,"Alberto");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (3,"Alberto");
 
 insert into Participante (nomeParticipante) value ("Amanda");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (3,"Amanda");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (4,"Amanda");
 
 insert into Participante (nomeParticipante) value ("Mariana");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (3,"Mariana");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (4,"Mariana");
 
 insert into Participante (nomeParticipante) value ("Luiza");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (4,"Luiza");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (2,"Luiza");
 
 insert into Participante (nomeParticipante) value ("Rodolfo");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (4,"Rodolfo");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (2,"Rodolfo");
 
 insert into Participante (nomeParticipante) value ("Guilherme");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (4,"Guilherme");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (2,"Guilherme");
 
 
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (4,"Renato");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (3,"Roberto");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (1,"Amanda");
-insert into AgendaTemParticipante (idAgenda, nomeParticipante) values (2,"Rodolfo");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (2,"Renato");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (4,"Roberto");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (1,"Amanda");
+insert into HorarioTemParticipante (idHorario, nomeParticipante) values (3,"Rodolfo");
 
 
-select idAgenda,nomeUsuario,sobrenome,nomeAgenda,(quantidadeVagas - count(*)) as vagasDisponiveis from Agenda natural join AgendaTemParticipante natural join Usuario group by idAgenda;
-
-
-drop table AgendaTemParticipante;
+drop table HorarioTemParticipante;
 drop table Participante;
 drop table Horario;
 drop table Agenda;

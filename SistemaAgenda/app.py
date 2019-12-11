@@ -154,12 +154,21 @@ def popula_db():
 def inicial():
     return render_template('index.html')
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return render_template('index.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def autenticacao():
     form = AutenticacaoForm()
 
     if form.validate_on_submit():   # Entrou via POST
-        usuario = Usuario.query.filter_by(username=form.username.data).first_or_404()
+        usuario = Usuario.query.filter_by(username=form.username.data).first()
+        if usuario is None:
+            form.erroLogin = 'Usuário ou senha inválidos'
+            return render_template('login.html', formulario=form)
+
         if usuario.verifica_senha(form.senha.data):
             session['logged_in'] = True
             session['usuario'] = usuario.username
@@ -167,8 +176,7 @@ def autenticacao():
             return redirect(url_for('pessoal'))
             # return render_template('autenticado.html', title="Usuário autenticado", user=session.get('usuario'))
         else:
-            flash('Usuário ou senha inválidos')
-            return redirect(url_for('pessoal'))
+            form.erroLogin = 'Usuário ou senha inválidos'
 
     return render_template('login.html', formulario=form)
 
@@ -228,6 +236,7 @@ def detalhesAgenda():
         horarios.append(h)
 
     dados = {
+        'idAgenda': agenda.idAgenda,
         'nome': agenda.nomeAgenda,
         'descricao': agenda.descricao,
         'horarios': horarios,
@@ -244,18 +253,24 @@ def novaAgenda():
 
     form = NovaAgendaForm()
 
-    if request.method == 'POST':
+    if request.method == 'POST':   # Entrou via POST
         if form.adicionaHorario.data:
+            print("add horario")
             dataInicio = request.form.get("dataInicio")
             horaInicio = request.form.get("horarioInicio")
             dataFim = request.form.get("dataFim")
             horaFim = request.form.get("horarioFim")
-            if not all(x for x in [dataInicio, horaInicio, dataFim, horaFim]):
+            vagas = request.form.get("vagas")
+            for k in [dataInicio, horaInicio, dataFim, horaFim, vagas]:
+                print(k)
+            if not all(x for x in [dataInicio, horaInicio, dataFim, horaFim, vagas]):
+                print("erro")
+                form.erroNovaAgenda = 'Para adicionar um horário informe: data/hora de inicio e fim e a quantidade de vagas'
                 return render_template('novaAgenda.html', formulario=form)
 
             inicio = datetime.strptime(dataInicio + ' ' + horaInicio, '%Y-%m-%d %H:%M')
             fim = datetime.strptime(dataFim + ' ' + horaFim, '%Y-%m-%d %H:%M')
-            vagas = request.form.get("vagas")
+
             horario = {'id': len(form.horarios), 'inicio': inicio, 'fim': fim, 'vagas': vagas}
             form.horarios.append(horario)
 
@@ -269,6 +284,12 @@ def novaAgenda():
             return redirect(url_for('pessoal'))
 
         elif form.adicionar.data:
+            form.validate_on_submit() # check form
+
+            if not len(form.horarios):
+                form.erroNovaAgenda = 'Adicione ao menos um horário para cadastrar a agenda'
+                return render_template('novaAgenda.html', formulario=form)
+
             nomeAgenda = request.form.get("nome")
             descricao = request.form.get("descricao")
             ativa = True if request.form.get("ativa") else False
@@ -307,7 +328,7 @@ def agendaUsuario():
         a = {'nomeAgenda': agenda.nomeAgenda, 'descricao': agenda.descricao, 'idAgenda': agenda.idAgenda}
         agendas.append(a)
 
-    dados = {'nomeUsuario': usuario.nomeUsuario + ' ' + usuario.sobrenome, 'agendas': agendas}
+    dados = {'nomeUsuario': usuario.nomeUsuario + ' ' + usuario.sobrenome, 'agendas': agendas, 'idUsuario': idUsuario}
     return render_template('agendasUsuario.html', dados=dados)
 
 @app.route('/detalhesAgendaUsuario', methods=['GET', 'POST'])

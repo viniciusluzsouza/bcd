@@ -8,13 +8,17 @@
 
 <div class="container center_div" style="width: 75%;">
     <form id="formAdicionar" action="{{ url_for('novaAgenda') }}" method="POST" novalidate>
-      <div class="form-group">
-        <label>{{ formulario.nome.label }}</label>
-        {{ formulario.nome(class="form-control") }}
+      {{ formulario.hidden_tag() }}
+      <label>{{ formulario.nome.label }}</label>
+      <div class="form-group form-inline">
+        {{ formulario.nome(size=45, class="form-control", style="width: 30%;") }}
+        {% for erro in formulario.nome.errors %}
+          <span style="color: red; font-size: 90%">*{{ erro }}<br></span>
+        {% endfor %}
       </div>
+      <label>{{ formulario.descricao.label }}</label>
       <div class="form-group">
-        <label>{{ formulario.descricao.label }}</label>
-        {{ formulario.descricao(class="form-control") }}
+        {{ formulario.descricao(size=150, class="form-control") }}
       </div>
       <div class="form-row">
         <div class="form-group col-md-2 col-lg-2 col-xl-2">
@@ -74,6 +78,14 @@
           <label>{{ formulario.ativa.label }}</label>
         </div>
       </div>
+
+      <br>
+      <div class="form-row text-center col-md-12 col-lg-12 col-xl-12" style="padding: 15px">
+        {% if formulario.erroNovaAgenda %}
+          <span style="color: red; font-size: 90%">*{{ formulario.erroNovaAgenda }}<br></span>
+        {% endif %}
+      </div>
+      <br>
 
       <div class="form-row text-center col-md-12 col-lg-12 col-xl-12" style="padding: 15px">
         {{ formulario.adicionar(class="form-control btn btn-primary", style="width: 15%;") }}

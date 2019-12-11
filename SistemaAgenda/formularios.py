@@ -7,6 +7,8 @@ class AutenticacaoForm(FlaskForm):
     username = StringField('Nome do usuário', validators=[DataRequired('Campo obrigatório')])
     senha = PasswordField('Senha', validators=[DataRequired('Campo obrigatório')])
     enviar = SubmitField('Entrar')
+    voltar = SubmitField('Voltar')
+    erroLogin = None
 
 
 class NovaAgendaForm(FlaskForm):
@@ -16,13 +18,14 @@ class NovaAgendaForm(FlaskForm):
     cancelar = SubmitField('Cancelar')
     removeHorario = SubmitField('X')
     adicionaHorario = SubmitField('+')
-    dataInicio = DateField('Data Início', validators=[DataRequired('Campo obrigatório')])
-    dataFim = DateField('Data Fim', validators=[DataRequired('Campo obrigatório')])
-    horarioInicio = TimeField('Hora Início', validators=[DataRequired('Campo obrigatório')])
-    horarioFim = TimeField('Hora Fim', validators=[DataRequired('Campo obrigatório')])
-    vagas = IntegerField('Vagas', validators=[DataRequired('Campo Obrigatório')])
+    dataInicio = DateField('Data Início')
+    dataFim = DateField('Data Fim')
+    horarioInicio = TimeField('Hora Início')
+    horarioFim = TimeField('Hora Fim')
+    vagas = IntegerField('Vagas')
     ativa = BooleanField('Agenda ativa')
     horarios = []
+    erroNovaAgenda = None
 
 
 class InscreverForm(FlaskForm):

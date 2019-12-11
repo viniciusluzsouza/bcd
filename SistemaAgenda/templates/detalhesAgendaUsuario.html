@@ -26,6 +26,9 @@
                                 <div class="form-group text-left col-md-12 col-lg-12 col-xl-12">
                                     {{ formulario.nome(class="form-control", placeholder="Nome") }}
                                     {{ formulario.inscrever(class="form-control btn btn-primary", href=url_for('detalhesAgendaUsuario', id=h.get('id'))) }}
+                                    {% for erro in formulario.nome.errors %}
+                                        <span style="color: red">*{{ erro }}<br></span>
+                                    {% endfor %}
                                 </div>
                             </form>
                         </div>
@@ -48,6 +51,11 @@
     {% endif %}
 
 </div>
+
+    <br><br>
+    <div align="center">
+        <button class="btn btn-secondary" type="button" onclick="history.go(-1);">Voltar</button>
+    </div>
 
 {% endblock %}
 
