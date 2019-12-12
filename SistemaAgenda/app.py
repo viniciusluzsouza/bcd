@@ -42,7 +42,7 @@ class Usuario(db.Model):
 class Agenda(db.Model):
     __tablename__ = "Agenda"
     idAgenda = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nomeAgenda = db.Column(db.String(45), index=True)
+    nomeAgenda = db.Column(db.String(45), index=True, nullable=False)
     descricao = db.Column(db.String(120), index=True, nullable=True)
     ativa = db.Column(db.Boolean, default=True)
     idUsuario = db.Column(db.Integer, db.ForeignKey('Usuario.idUsuario'), primary_key=True, nullable=False)
@@ -68,8 +68,9 @@ class Horario(db.Model):
     __tablename__ = "Horario"
     idHorario = db.Column(db.Integer, primary_key=True, autoincrement=True)
     vagas = db.Column(db.Integer, index=True)
-    dataInicio = db.Column(db.DateTime, index=True)
-    dataFim = db.Column(db.DateTime, index=True)
+    dataInicio = db.Column(db.Date, index=True)
+    horaInicio = db.Column(db.Time, index=True)
+    horaFim = db.Column(db.Time, index=True)
     idAgenda = db.Column(db.Integer, db.ForeignKey('Agenda.idAgenda'), primary_key=True, nullable=False)
     participantes = db.relationship('Participante', secondary=participantes, lazy='subquery',
         backref=db.backref('Horario', lazy=True))
@@ -78,11 +79,12 @@ class Horario(db.Model):
         super().__init__(**kwargs)
         self.vagas = kwargs.pop('vagas')
         self.dataInicio = kwargs.pop('dataInicio')
-        self.dataFim = kwargs.pop('dataFim')
+        self.horaInicio = kwargs.pop('horaInicio')
+        self.horaFim = kwargs.pop('horaFim')
         self.idAgenda = kwargs.pop('idAgenda')
 
     def __repr__(self):
-        return '<Horario {} - {} ({})>'.format(self.dataInicio, self.dataFim, self.vagas)
+        return '<Horario {}: {} - {} ({})>'.format(self.dataInicio, self.horaInicio, self.horaFim, self.vagas)
 
 class Participante(db.Model):
     __tablename__ = "Participante"
@@ -109,18 +111,29 @@ def popula_db():
     ]
 
     horarios = [
-        Horario(vagas=10, dataInicio=datetime.strptime('02/12/2019 08:00:00', '%d/%m/%Y %H:%M:%S'),
-                dataFim=datetime.strptime('02/12/2019 10:00:00', '%d/%m/%Y %H:%M:%S'), idAgenda=1),
-        Horario(vagas=10, dataInicio=datetime.strptime('03/12/2019 09:00:00', '%d/%m/%Y %H:%M:%S'),
-                dataFim=datetime.strptime('03/12/2019 11:00:00', '%d/%m/%Y %H:%M:%S'), idAgenda=1),
-        Horario(vagas=15, dataInicio=datetime.strptime('03/12/2019 13:30:00', '%d/%m/%Y %H:%M:%S'),
-                dataFim=datetime.strptime('03/12/2019 17:30:00', '%d/%m/%Y %H:%M:%S'), idAgenda=2),
-        Horario(vagas=15, dataInicio=datetime.strptime('05/12/2019 07:30:00', '%d/%m/%Y %H:%M:%S'),
-                dataFim=datetime.strptime('05/12/2019 17:30:00', '%d/%m/%Y %H:%M:%S'), idAgenda=3),
-        Horario(vagas=10, dataInicio=datetime.strptime('03/12/2019 13:30:00', '%d/%m/%Y %H:%M:%S'),
-                dataFim=datetime.strptime('03/12/2019 17:30:00', '%d/%m/%Y %H:%M:%S'), idAgenda=4),
-        Horario(vagas=10, dataInicio=datetime.strptime('28/11/2019 13:30:00', '%d/%m/%Y %H:%M:%S'),
-                dataFim=datetime.strptime('28/11/2019 17:30:00', '%d/%m/%Y %H:%M:%S'), idAgenda=5)
+        Horario(vagas=10, dataInicio=datetime.strptime('02/12/2019 08:00:00', '%d/%m/%Y %H:%M:%S').date(),
+                horaInicio=datetime.strptime('02/12/2019 08:00:00', '%d/%m/%Y %H:%M:%S').time(),
+                horaFim=datetime.strptime('02/12/2019 10:00:00', '%d/%m/%Y %H:%M:%S').time(), idAgenda=1),
+
+        Horario(vagas=10, dataInicio=datetime.strptime('03/12/2019 09:00:00', '%d/%m/%Y %H:%M:%S').date(),
+                horaInicio=datetime.strptime('03/12/2019 09:00:00', '%d/%m/%Y %H:%M:%S').time(),
+                horaFim=datetime.strptime('03/12/2019 11:00:00', '%d/%m/%Y %H:%M:%S').time(), idAgenda=1),
+
+        Horario(vagas=15, dataInicio=datetime.strptime('03/12/2019 13:30:00', '%d/%m/%Y %H:%M:%S').date(),
+                horaInicio=datetime.strptime('03/12/2019 13:30:00', '%d/%m/%Y %H:%M:%S').time(),
+                horaFim=datetime.strptime('03/12/2019 17:30:00', '%d/%m/%Y %H:%M:%S').time(), idAgenda=2),
+
+        Horario(vagas=15, dataInicio=datetime.strptime('05/12/2019 07:30:00', '%d/%m/%Y %H:%M:%S').date(),
+                horaInicio=datetime.strptime('05/12/2019 07:30:00', '%d/%m/%Y %H:%M:%S').time(),
+                horaFim=datetime.strptime('05/12/2019 17:30:00', '%d/%m/%Y %H:%M:%S').time(), idAgenda=3),
+
+        Horario(vagas=10, dataInicio=datetime.strptime('03/12/2019 13:30:00', '%d/%m/%Y %H:%M:%S').date(),
+                horaInicio=datetime.strptime('03/12/2019 13:30:00', '%d/%m/%Y %H:%M:%S').time(),
+                horaFim=datetime.strptime('03/12/2019 17:30:00', '%d/%m/%Y %H:%M:%S').time(), idAgenda=4),
+
+        Horario(vagas=10, dataInicio=datetime.strptime('28/11/2019 13:30:00', '%d/%m/%Y %H:%M:%S').date(),
+                horaInicio=datetime.strptime('28/11/2019 13:30:00', '%d/%m/%Y %H:%M:%S').time(),
+                horaFim=datetime.strptime('28/11/2019 17:30:00', '%d/%m/%Y %H:%M:%S').time(), idAgenda=5)
     ]
 
     participantes = [
@@ -183,7 +196,6 @@ def autenticacao():
 
 @app.route('/pessoal')
 def pessoal():
-    print(str(session))
     if not session.get('logged_in'):
         form = AutenticacaoForm()
         return render_template('login.html', formulario=form)
@@ -223,12 +235,12 @@ def detalhesAgenda():
 
     agenda = Agenda.query.filter_by(idAgenda=idAgenda).first()
     horarios = []
-    print(str(agenda.horarios))
     for horario in agenda.horarios:
         participantes = [p.nomeParticipante for p in horario.participantes]
         h = {
-            'inicio': horario.dataInicio,
-            'fim': horario.dataFim,
+            'data': horario.dataInicio,
+            'inicio': horario.horaInicio,
+            'fim': horario.horaFim,
             'participantes': participantes,
             'vagas': horario.vagas,
             'vagasDisp': horario.vagas - len(participantes)
@@ -255,23 +267,23 @@ def novaAgenda():
 
     if request.method == 'POST':   # Entrou via POST
         if form.adicionaHorario.data:
-            print("add horario")
             dataInicio = request.form.get("dataInicio")
             horaInicio = request.form.get("horarioInicio")
-            dataFim = request.form.get("dataFim")
+            # dataFim = request.form.get("dataFim")
             horaFim = request.form.get("horarioFim")
             vagas = request.form.get("vagas")
-            for k in [dataInicio, horaInicio, dataFim, horaFim, vagas]:
-                print(k)
-            if not all(x for x in [dataInicio, horaInicio, dataFim, horaFim, vagas]):
-                print("erro")
-                form.erroNovaAgenda = 'Para adicionar um horário informe: data/hora de inicio e fim e a quantidade de vagas'
+            if not all(x for x in [dataInicio, horaInicio, horaFim, vagas]):
+                form.erroNovaAgenda = 'Para adicionar um horário informe: data, horario de inicio e fim, e a quantidade de vagas'
                 return render_template('novaAgenda.html', formulario=form)
 
             inicio = datetime.strptime(dataInicio + ' ' + horaInicio, '%Y-%m-%d %H:%M')
-            fim = datetime.strptime(dataFim + ' ' + horaFim, '%Y-%m-%d %H:%M')
+            fim = datetime.strptime(dataInicio + ' ' + horaFim, '%Y-%m-%d %H:%M')
 
-            horario = {'id': len(form.horarios), 'inicio': inicio, 'fim': fim, 'vagas': vagas}
+            if inicio > fim:
+                form.erroNovaAgenda = 'Horário de início não pode ser maior que o horário de término'
+                return render_template('novaAgenda.html', formulario=form)
+
+            horario = {'id': len(form.horarios), 'data': inicio.date(), 'inicio': inicio.time(), 'fim': fim.time(), 'vagas': vagas}
             form.horarios.append(horario)
 
         elif form.removeHorario.data:
@@ -284,25 +296,34 @@ def novaAgenda():
             return redirect(url_for('pessoal'))
 
         elif form.adicionar.data:
-            form.validate_on_submit() # check form
+            # form.validate_on_submit()   # check form
+            nomeAgenda = request.form.get("nome")
+            if nomeAgenda is None or not len(nomeAgenda):
+                form.erroNovaAgenda = 'Informe o nome da agenda'
+                return render_template('novaAgenda.html', formulario=form)
 
             if not len(form.horarios):
                 form.erroNovaAgenda = 'Adicione ao menos um horário para cadastrar a agenda'
                 return render_template('novaAgenda.html', formulario=form)
 
-            nomeAgenda = request.form.get("nome")
             descricao = request.form.get("descricao")
             ativa = True if request.form.get("ativa") else False
             idUsuario = session['idUsuario']
             agenda = Agenda(nomeAgenda=nomeAgenda, descricao=descricao, idUsuario=idUsuario, ativa=ativa)
             db.session.add(agenda)
             db.session.flush()
-            horarios = [Horario(vagas=h.get('vagas'), dataInicio=h.get('inicio'), dataFim=h.get('fim'),
-                                idAgenda=agenda.idAgenda) for h in form.horarios]
+            horarios = [Horario(vagas=h.get('vagas'), dataInicio=h.get('data'), horaInicio=h.get('inicio'),
+                                horaFim=h.get('fim'), idAgenda=agenda.idAgenda) for h in form.horarios]
 
-            for horario in horarios:
-                db.session.add(horario)
-            db.session.commit()
+            try:
+                for horario in horarios:
+                    db.session.add(horario)
+
+                db.session.commit()
+            except Exception as e:
+                print(str(e))
+                form.erroNovaAgenda = 'Falha ao adicionar agenda'
+                return render_template('novaAgenda.html', formulario=form)
 
             return redirect(url_for('pessoal'))
 
@@ -329,6 +350,9 @@ def agendaUsuario():
         agendas.append(a)
 
     dados = {'nomeUsuario': usuario.nomeUsuario + ' ' + usuario.sobrenome, 'agendas': agendas, 'idUsuario': idUsuario}
+    if not len(agendas):
+        dados['semAgendas'] = True
+
     return render_template('agendasUsuario.html', dados=dados)
 
 @app.route('/detalhesAgendaUsuario', methods=['GET', 'POST'])
@@ -346,14 +370,20 @@ def detalhesAgendaUsuario():
         horario = Horario.query.filter_by(idHorario=idHorarioInscricao).first()
         if len(horario.participantes) >= horario.vagas:
             # Não pode se inscrever limite atingido.
-            dados['inscricao']['erro'] = True
+            dados['inscricao']['lotado'] = True
         else:
-            participante = Participante.query.filter_by(nomeParticipante=nome).first()
-            if participante is None:
-                participante = Participante(nomeParticipante=nome)
+            try:
+                participante = Participante.query.filter_by(nomeParticipante=nome).first()
 
-            horario.participantes.append(participante)
-            db.session.commit()
+                # Se o nome ja nao existir, adiciona, para evitar duplicatas.
+                if participante is None:
+                    participante = Participante(nomeParticipante=nome)
+
+                horario.participantes.append(participante)
+                db.session.commit()
+            except Exception as e:
+                print(str(e))
+                dados['erro'] = "Falha ao se inscrever"
 
     else:
         idAgenda = request.args.get('idAgenda')
@@ -367,13 +397,13 @@ def detalhesAgendaUsuario():
 
     horarios = []
     for h in agenda.horarios:
-        horario = {'idHorario': h.idHorario, 'inicio': h.dataInicio, 'fim': h.dataFim, 'vagas': h.vagas}
+        horario = {'idHorario': h.idHorario, 'data': h.dataInicio, 'inicio': h.horaInicio, 'fim': h.horaFim, 'vagas': h.vagas}
         horario['vagasDisp'] = h.vagas - len(h.participantes)
         horarios.append(horario)
 
         if 'inscricao' in dados and dados['inscricao']['idHorarioInscricao'] == h.idHorario:
-            dados['inscricao']['inicio'] = h.dataInicio
-            dados['inscricao']['fim'] = h.dataFim
+            dados['inscricao']['inicio'] = h.horaInicio
+            dados['inscricao']['fim'] = h.horaFim
 
     dados.update({'nomeAgenda': agenda.nomeAgenda, 'horarios': horarios, 'idAgenda': idAgenda})
     return render_template('detalhesAgendaUsuario.html', dados=dados, formulario=form)

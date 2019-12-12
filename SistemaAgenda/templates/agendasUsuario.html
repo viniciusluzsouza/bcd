@@ -23,6 +23,14 @@
       </tbody>
     </table>
 
+    {% if dados.get('semAgendas') %}
+        <br>
+        <div align="center">
+          <span style="color: red; font-size: 90%">*O usuário não possui agendas ativas<br></span>
+        </div>
+    {% endif %}
+
+
 
     <br><br>
     <div align="center">

@@ -21,28 +21,24 @@
         {{ formulario.descricao(size=150, class="form-control") }}
       </div>
       <div class="form-row">
-        <div class="form-group col-md-2 col-lg-2 col-xl-2">
+        <div class="form-group col-md-3 col-lg-3 col-xl-3">
         <label>{{ formulario.dataInicio.label }}</label>
         {{ formulario.dataInicio(class="form-control", type="date") }}
         </div>
-        <div class="form-group col-2 col-lg-2 col-xl-2">
+        <div class="form-group col-3 col-lg-3 col-xl-3">
         <label>{{ formulario.horarioInicio.label }}</label>
         {{ formulario.horarioInicio(class="form-control", type="time") }}
         </div>
-        <div class="form-group col-md-2 col-lg-2 col-xl-2">
-        <label>{{ formulario.dataFim.label }}</label>
-        {{ formulario.dataFim(class="form-control", type="date") }}
-        </div>
-        <div class="form-group col-2 col-lg-2 col-xl-2">
+        <div class="form-group col-3 col-lg-3 col-xl-3">
         <label>{{ formulario.horarioFim.label }}</label>
         {{ formulario.horarioFim(class="form-control", type="time") }}
         </div>
         <div class="form-group col-2 col-lg-2 col-xl-2">
         <label>{{ formulario.vagas.label }}</label>
-        {{ formulario.vagas(class="form-control", type="number") }}
+        {{ formulario.vagas(class="form-control", type="number", min="0") }}
         </div>
-        <div class="form-group col-md-2 col-lg-2 col-xl-2">
-          <label>Novo Horario</label>
+        <div class="form-group col-md-1 col-lg-1 col-xl-1">
+          <label>Adicionar</label>
 <!--            <button type="submit" class=" form-control btn btn-warning"><b>+</b></button>-->
             {{ formulario.adicionaHorario(class="form-control btn btn-warning") }}
         </div>
@@ -53,6 +49,7 @@
     <table class="table table-hover" align="center" style="width: 50%;">
       <thead>
         <tr>
+          <th scope="col">Data</th>
           <th scope="col">Inicio</th>
           <th scope="col">Fim</th>
           <th scope="col">Vagas</th>
@@ -62,6 +59,7 @@
       <tbody>
         {% for h in formulario.horarios %}
             <tr>
+              <td>{{ h.get('data') }}</td>
               <td>{{ h.get('inicio') }}</td>
               <td>{{ h.get('fim') }}</td>
               <td>{{ h.get('vagas') }}</td>

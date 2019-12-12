@@ -8,6 +8,7 @@
     <br><br>
     <table class="table table-hover" align="center" style="font-size : 15px; border:4px">
         <thead>
+            <th scope="col">Data</th>
             <th scope="col">Inicio</th>
             <th scope="col">Fim</th>
             <th scope="col">Vagas Disponíveis</th>
@@ -16,6 +17,7 @@
         <tbody>
             {% for h in dados['horarios'] %}
                 <tr>
+                    <td>{{ h.get('data') }}</td>
                     <td>{{ h.get('inicio') }}</td>
                     <td>{{ h.get('fim') }}</td>
                     <td>{{ h.get('vagasDisp') }}</td>
@@ -39,9 +41,13 @@
     </table>
 
     {% if 'inscricao' in dados %}
-        {% if 'erro' in dados['inscricao'] %}
+        {% if 'lotado' in dados['inscricao'] %}
             <div class="container center_div" style="width: 75%;">
                 <p align="center">O horário de <b>{{ dados['inscricao']['inicio'] }}</b> até <b>{{ dados['inscricao']['fim'] }}</b> está <b>LOTADO</b></p>
+            </div>
+        {% elif 'erro' in dados %}
+            <div class="container center_div" style="width: 75%;">
+                <span style="color: red; font-size: 90%">*{{ dados['erro'] }}</span>
             </div>
         {% else %}
             <div class="container center_div" style="width: 75%;">

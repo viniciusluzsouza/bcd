@@ -9,6 +9,7 @@
     <br><br>
     <table class="table table-hover" align="center" style="font-size : 15px; border:4px">
         <thead>
+            <th scope="col">Data</th>
             <th scope="col">Horário</th>
             <th scope="col">Vagas</th>
             <th scope="col">Vagas Disponíveis</th>
@@ -17,6 +18,7 @@
         <tbody>
             {% for h in dados['horarios'] %}
                 <tr>
+                    <td>{{ h.get('data') }}</td>
                     <td>{{ h.get('inicio') }} - {{ h.get('fim') }}</td>
                     <td>{{ h.get('vagas') }}</td>
                     <td>{{ h.get('vagasDisp') }}</td>
