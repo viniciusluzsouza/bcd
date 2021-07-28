@@ -1,0 +1,3 @@
+L,soma
+S,ola
+L,multiplica
